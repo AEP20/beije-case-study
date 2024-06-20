@@ -1,6 +1,13 @@
-import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Provider, useSelector} from 'react-redux';
+import React, {Fragment} from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+} from 'react-native';
+import {Provider} from 'react-redux';
 import store from './src/store/store';
 import {TabNavigation} from './src/components';
 import {SelectedItemsCard} from './src/components/SelectedItemsCard';
@@ -8,42 +15,45 @@ import {Colors} from './src/utils';
 import {useLogic} from './src/hooks/useLogic';
 
 const AppContent: React.FC = () => {
-  const {
-    tabs,
-    pedItems,
-    dailyPedItems,
-    tamponItems,
-    totalQuantity,
-    totalPedQuantity,
-    totalDailyPedQuantity,
-    totalTamponQuantity,
-  } = useLogic();
+  const {tabs, pedItems, dailyPedItems, tamponItems, totalQuantity} =
+    useLogic();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.upperContainer}>
-        <TabNavigation tabs={tabs} />
-      </View>
-      <ScrollView style={styles.scrollViewContent}>
-        {totalQuantity > 0 ? (
-          <Text style={styles.title}>Seçilen Ürünler</Text>
-        ) : (
-          <Text style={styles.title}>Sepetinizde Ürün Yok</Text>
-        )}
-
-        <SelectedItemsCard items={pedItems} type="ped" title="Ped Paketleri" />
-        <SelectedItemsCard
-          items={dailyPedItems}
-          type="dailyPed"
-          title="Günlük Ped Paketleri"
-        />
-        <SelectedItemsCard
-          items={tamponItems}
-          type="tampon"
-          title="Tampon Paketleri"
-        />
-      </ScrollView>
-    </View>
+    <>
+  
+      <SafeAreaView style={{flex: 1, backgroundColor: Colors.BackgroundColor}}>
+        <StatusBar barStyle="light-content" />
+        <View style={styles.mainContainer}>
+          <View style={styles.upperContainer}>
+            <TabNavigation tabs={tabs} />
+          </View>
+          <View style={styles.bottomContainer}>
+            {totalQuantity > 0 ? (
+              <Text style={styles.subTitle}>Özel Paketin</Text>
+            ) : (
+              <Text style={styles.subTitle}>Sepetinizde Ürün Yok</Text>
+            )}
+            <ScrollView style={styles.scrollViewContent}>
+              <SelectedItemsCard
+                items={pedItems}
+                type="ped"
+                title="Ped Paketleri"
+              />
+              <SelectedItemsCard
+                items={dailyPedItems}
+                type="dailyPed"
+                title="Günlük Ped Paketleri"
+              />
+              <SelectedItemsCard
+                items={tamponItems}
+                type="tampon"
+                title="Tampon Paketleri"
+              />
+            </ScrollView>
+          </View>
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
 
@@ -54,31 +64,29 @@ const App: React.FC = () => (
 );
 
 const styles = StyleSheet.create({
-  container: {
-    height: '100%',
+  mainContainer: {
     flex: 1,
-    backgroundColor: Colors.BackgroundColor,
-    paddingTop: 50,
+    height: '100%',
   },
   upperContainer: {
-    height: '58%',
+    height: '52%',
+    backgroundColor: Colors.BackgroundColor,
   },
   bottomContainer: {
-    height: '42%',
+    height: '48%',
+    backgroundColor: Colors.BackgroundColor,
   },
   scrollViewContent: {
-    backgroundColor: Colors.red,
-    paddingHorizontal: 16,
-    paddingTop: 15,
+    backgroundColor: Colors.BackgroundColor,
+    paddingHorizontal: 20,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
   },
-  title: {
-    fontSize: 26,
-    color: Colors.White,
-    fontWeight: 'bold',
+  subTitle: {
+    fontSize: 24,
+    color: Colors.Black,
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 12,
   },
 });
 
